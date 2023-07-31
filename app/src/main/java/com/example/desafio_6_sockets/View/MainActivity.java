@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     // buscando elementos do layout
     ImageButton imageButtonSend;
     EditText editTextMessage;
+
     private ChatClient socketClient;
 
     @Override
