@@ -27,29 +27,16 @@
         android:background="@color/escuro">
 
         <LinearLayout
-            android:id="@+id/layoutMessageContainer"
+            android:id="@+id/message_space"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200sp"
             android:orientation="vertical"
-            android:padding="8dp" >
-
-            <!-- Coluna esquerda: Mensagens enviadas pelo próprio dispositivo -->
-            <LinearLayout
-                android:id="@+id/layoutMessageOwn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="end" />
-
-            <!-- Coluna direita: Mensagens do outro usuário -->
-            <LinearLayout
-                android:id="@+id/layoutMessageOther"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="start" />
+            android:layout_gravity="bottom"
+            >
 
         </LinearLayout>
+            <!-- Apaguei os linear Layout pois eles serão criados pelo inflate -->
+
 
     </ScrollView>
 
