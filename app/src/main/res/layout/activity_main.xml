@@ -55,7 +55,8 @@
             android:id="@+id/imageButtonAttach"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/teste"
+            android:src="@drawable/anexos"
+            android:background="@drawable/anexo_background"
             android:contentDescription="Anexar" />
 
         <!-- Campo de entrada de texto da mensagem -->
@@ -78,7 +79,8 @@
             android:id="@+id/imageButtonSend"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/sendb"
+            android:src="@drawable/env"
+            android:background="@drawable/anexo_background"
             android:contentDescription="Enviar"
             android:padding="8dp" />
     </LinearLayout>

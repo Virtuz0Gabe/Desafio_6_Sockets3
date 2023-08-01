@@ -14,10 +14,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ChatClient extends Thread {
-    private static final String SERVER_IP = "192.168.0.108"; // Endereço IP do servidor
+    //private static final String SERVER_IP = "192.168.0.108"; // Endereço IP do servidor de casa:
+    private static final String SERVER_IP = "192.168.7.214"; // Endereço de IP do servidor da Imply:
     private static final int SERVER_PORT = 4000; // Porta do servidor
     private static final String TAG = "Gabes";
     private BufferedWriter out;
+    private BufferedReader in;
+    private Socket clientSocket;
     private MainActivity mainActivity;
 
     public ChatClient (MainActivity mainActivity) {
@@ -27,18 +30,14 @@ public class ChatClient extends Thread {
     @Override
     public void run() {
         try {
-            Socket clientSocket = new Socket(SERVER_IP, SERVER_PORT);
+            this.clientSocket = new Socket(SERVER_IP, SERVER_PORT);
 
             // Para enviar mensgagens para o servidor
-            this.out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+            this.out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream(), "UTF-8"));
 
             // Receber resposta do servidor
+            this.in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "UTF-8"));
             receiveMessageLoop(clientSocket);
-            //BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            //String serverResponse = in.readLine();
-
-            //in.close();
-            //clientSocket.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,9 +50,12 @@ public class ChatClient extends Thread {
             public void run() {
                 while (true){
                     try {
-                        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                        //BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "UTF-8"));
                         String serverResponse = in.readLine();
                         Log.i(TAG, "Mensagem recebida do servidor: " + serverResponse);
+                        if (serverResponse.startsWith("image")){
+                            
+                        }
                         mainActivity.showReceiveMessage(serverResponse);
                     } catch (IOException e){
                         throw new RuntimeException(e);
@@ -78,6 +80,32 @@ public class ChatClient extends Thread {
             }
         });
         thread.start();
+    }
+
+    public void sendImage(String base64Image){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    out.write("image " + base64Image);
+                    out.newLine();
+                    out.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        thread.start();
+    }
+
+    public void close(){
+        try {
+            out.close();
+            in.close();
+            clientSocket.close();
+        } catch (IOException e){
+            Log.e(TAG, e.getMessage());
+        }
     }
 }
 
